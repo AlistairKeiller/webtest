@@ -12,17 +12,29 @@ def inject_dark_mode(debugger_url):
             page_id = page['id']
             ws_url = page['webSocketDebuggerUrl']
 
-            # JavaScript code to inject DarkReader into the first iframe's head
+            # JavaScript code to check if DarkReader is already loaded and inject it into the first iframe's head if not
             js_code = """
                 var iframes = document.getElementsByTagName('iframe');
                 if (iframes.length > 0) {
-                    var iframeHead = iframes[0].contentWindow.document.head;
-                    var script = document.createElement('script');
-                    script.src = 'https://unpkg.com/darkreader@4.9.73/darkreader.js';
-                    script.onload = function() {
-                        iframes[0].contentWindow.DarkReader.enable({darkSchemeBackgroundColor: "#1e1e2e", darkSchemeTextColor: "#cdd6f4", selectionColor: "#585b70"});
-                    };
-                    iframeHead.appendChild(script);
+                    var iframeWindow = iframes[0].contentWindow;
+                    if (!iframeWindow.DarkReader) { // Check if DarkReader is not already defined in iframe
+                        var iframeHead = iframeWindow.document.head;
+                        var script = document.createElement('script');
+                        script.src = 'https://unpkg.com/darkreader@4.9.73/darkreader.js';
+                        script.onload = function() {
+                            iframeWindow.DarkReader.enable({darkSchemeBackgroundColor: "#1e1e2e", darkSchemeTextColor: "#cdd6f4", selectionColor: "#585b70"});
+                        };
+                        iframeHead.appendChild(script);
+                    }
+                } else {
+                    if (!window.DarkReader) { // Check if DarkReader is not already defined in main window
+                        var script = document.createElement('script');
+                        script.src = 'https://unpkg.com/darkreader@4.9.73/darkreader.js';
+                        script.onload = function() {
+                            DarkReader.enable({darkSchemeBackgroundColor: "#1e1e2e", darkSchemeTextColor: "#cdd6f4", selectionColor: "#585b70"});
+                        };
+                        document.head.appendChild(script);
+                    }
                 }
             """
 
