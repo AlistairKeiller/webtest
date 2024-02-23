@@ -17,9 +17,8 @@ def inject_dark_mode(debugger_url):
                     var script = document.createElement('script');
                     script.onload = function() {
                         DarkReader.enable({darkSchemeBackgroundColor: "#1e1e2e", darkSchemeTextColor: "	#cdd6f4", selectionColor: "#585b70"});
-                        document.body.setAttribute('darkreader-injected', 'true');
                     };
-                    script.src = 'https://unpkg.com/darkreader@4.9.77/darkreader.js';
+                    script.src = 'https://unpkg.com/darkreader/darkreader.js';
                     document.body.appendChild(script);
                 }
             """
