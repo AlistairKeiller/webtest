@@ -23,5 +23,5 @@ echo """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
     <key>StandardOutPath</key>
     <string>/tmp/com.alistair.webtest.out</string>
 </dict>
-</plist>""" > com.alistair.webtest.plist
-launchctl load com.alistair.webtest.plist
+</plist>""" > ~/Library/LaunchAgents/com.alistair.webtest.plist
+launchctl load ~/Library/LaunchAgents/com.alistair.webtest.plist
